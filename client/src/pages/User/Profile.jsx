@@ -23,10 +23,10 @@ const Profile = () => {
                 setLoading(true);
                 if (user?.role === 'freelancer') {
                     const { data } = await axios.get('/api/bids/my-bids');
-                    setMyBids(data);
+                    setMyBids(Array.isArray(data) ? data : []);
                 } else {
                     const { data } = await axios.get('/api/gigs/my-gigs');
-                    setGigs(data);
+                    setGigs(Array.isArray(data) ? data : []);
                 }
             } catch (err) {
                 console.error(err);
@@ -286,7 +286,7 @@ const Profile = () => {
                         </div>
                     ) : (
                         <div className="grid gap-6">
-                            {gigs.map((gig) => (
+                            {Array.isArray(gigs) && gigs.map((gig) => (
                                 <div key={gig._id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
                                     <div className="flex justify-between items-start mb-4">
                                         <div>

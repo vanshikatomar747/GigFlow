@@ -17,7 +17,7 @@ const Feed = () => {
         try {
             setLoading(true);
             const { data } = await axios.get(`/api/gigs?search=${search}`);
-            setGigs(data);
+            setGigs(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error('Error fetching gigs:', error);
         } finally {
@@ -74,7 +74,7 @@ const Feed = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {gigs.map((gig) => (
+                        {Array.isArray(gigs) && gigs.map((gig) => (
                             <Link to={`/gigs/${gig._id}`} key={gig._id} className="block group">
                                 <div className={`card h-full hover:shadow-md transition-all duration-300 border-gray-100 flex flex-col ${gig.bidCount > 0 ? 'border-l-4 border-l-purple-500' : 'hover:border-primary/20'}`}>
                                     <div className="flex justify-between items-start mb-4">
