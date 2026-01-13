@@ -18,13 +18,19 @@ const Register = () => {
         }
     }, [user, navigate]);
 
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        setLoading(true);
         try {
             await register(name, email, password, role);
             navigate('/verify-otp', { state: { email, message: 'Verification code sent to your email.' } });
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -86,7 +92,9 @@ const Register = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn-primary w-full py-2.5">Create Account</button>
+                    <button type="submit" className="btn-primary w-full py-2.5" disabled={loading}>
+                        {loading ? 'Creating Account...' : 'Create Account'}
+                    </button>
                     <p className="text-center text-sm text-gray-600 mt-4">
                         Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Log In</Link>
                     </p>
