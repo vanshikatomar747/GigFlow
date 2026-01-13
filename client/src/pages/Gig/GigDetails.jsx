@@ -32,7 +32,7 @@ const GigDetails = () => {
                 // If owner, fetch bids
                 if (user && gigData.ownerId._id === user._id) {
                     const { data: bidsData } = await axios.get(`/api/bids/${id}`);
-                    setBids(bidsData);
+                    setBids(Array.isArray(bidsData) ? bidsData : []);
                 } else if (user) {
                     // Check if user has already bid
                     const { data: myBidData } = await axios.get(`/api/bids/check/${id}`);
@@ -112,7 +112,7 @@ const GigDetails = () => {
                         <p className="text-gray-500 italic">No bids yet.</p>
                     ) : (
                         <div className="space-y-4">
-                            {bids.map((bid) => (
+                            {Array.isArray(bids) && bids.map((bid) => (
                                 <div key={bid._id} className={`border rounded-xl p-6 transition-colors ${bid.status === 'Hired' ? 'bg-green-50 border-green-200' : 'border-gray-100 hover:border-primary/30'}`}>
                                     <div className="flex justify-between items-start mb-4">
                                         <div className="flex items-center space-x-3">
